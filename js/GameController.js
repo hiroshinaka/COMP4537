@@ -1,4 +1,5 @@
 const sleep = ms => new Promise(resolve => setTimeout(resolve, ms));
+
 class GameController{
     constructor(ui) {
         this.ui = ui;
@@ -9,27 +10,43 @@ class GameController{
         this.n = 0;
         this.nextIndex = 0;
         this.expected = [];
- 
+        this.runId = 0;
         this.ui.onGo((n) => this.start(n));
     }
 
-    async start(n) {
-        this.ui.clearGameArea();
+    restart(){
         this.buttons = [];
-        this.n = n;
         this.nextIndex = 0;
-        this.expected = Array.from({ length: n }, (_, i) => i + 1);
-        this.updateGameState("showing");
+        this.expected = [];
+        this.ui.clearGameArea();
+        this.state = "idle";
+    }
 
-        // create n buttons in a row (initial layout)
-        this.addButton(n);
+    async start(n) {
+        this.runId++;
+        const runId = this.runId;
+        try{
+            this.restart()
+            this.expected = Array.from({ length: n }, (_, i) => i + 1);
+            this.updateGameState("showing");
+            if (runId !== this.runId) return;
+            // create n buttons in a row (initial layout)
+            this.addButton(n);
 
-        this.ui.showMessage("Memorize the order…");
-        this.updateGameState("pausing");
+            this.ui.showMessage("Memorize the order…");
+            this.updateGameState("pausing");
+            if (runId !== this.runId) return;
 
-        await this.pause(n);
-        await this.scrambling(n);
-        this.enableAnswering();
+            await this.pause(n);
+            await this.scrambling(n);
+
+            if (runId !== this.runId) return;
+            this.enableAnswering();
+            if (runId !== this.runId) return;
+        }
+        finally{
+
+        }
 
     }
     updateGameState(newState){
