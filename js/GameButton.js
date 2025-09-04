@@ -1,17 +1,19 @@
 class GameButton{
-    constructor(id){
-        this.id = this.id;
+    constructor(id, onClick){
+        this.id = id;
         this.isClickable = false;
 
         this.buttonElement = document.createElement("button");
+       
         this.buttonElement.style.width = "10em";
         this.buttonElement.style.height = "5em";
-        this.buttonElement.style.position = "absolute";
-        this.buttonElement.style.display = "none";
+        this.buttonElement.style.display = "inline-block";
         this.buttonElement.style.backgroundColor = this.randomColor();
 
         this.buttonElement.textContent = id;
-        document.body.appendChild(this.buttonElement);
+        this.buttonElement.addEventListener("click", () => {
+            if (this.isClickable && typeof onClick === "function") onClick(this);
+        });
     }
     randomColor(){
         const h = Math.floor(Math.random() * 360);
@@ -31,6 +33,6 @@ class GameButton{
     moveTo(x,y){
         this.buttonElement.style.left = `${x}px`;
         this.buttonElement.style.top = `${y}px`;
-        this.buttonElement.style.display = "block";
+        this.buttonElement.style.position = "fixed";
     }
 }
