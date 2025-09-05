@@ -2,6 +2,7 @@ const sleep = ms => new Promise(resolve => setTimeout(resolve, ms));
 
 class GameController{
     /**
+     * AI was used in the development of this project to troubleshoot, genereate improvements and debug.
      * Constructor for the GameController class.
      * Handles all the logic of the game, including the states, button management and interactions.
      * @param {UIController} ui - The UIController object to interact with the user interface.
@@ -92,7 +93,6 @@ class GameController{
         for(let i = 0; i < n; i++){
             const btn = new GameButton(i + 1, (tile) => this.handleClick(tile));
             this.ui.gameContainer.appendChild(btn.buttonElement);
-            btn.buttonElement.style.display = "inline-block";
             this.buttons.push(btn)
         }
     }
@@ -114,7 +114,7 @@ class GameController{
         this.updateGameState("scrambling");
         const { w: btnW, h: btnH } = this.layout.measure(this.buttons[0].buttonElement);
         for(let k = 0; k < n; k++){
-            this.ui.showMessage(`Scrambling ${k}/${n}...`);
+            this.ui.messages.show(`Scrambling ${k}/${n}...`);
             this.layout.scramble(this.buttons, btnW, btnH);
         if (k < n){
             await sleep(2000);

@@ -1,5 +1,6 @@
 class GameButton{
     /**
+     * AI was used in the development of this project to troubleshoot, generate improvements and debug.
      * Creates a new GameButton.
      * @param {number} id - The id of the button.
      * @param {function} onClick - The function to be called when the button is clicked.
@@ -10,9 +11,7 @@ class GameButton{
 
         //Button element and styles
         this.buttonElement = document.createElement("button");
-        this.buttonElement.style.width = "10em";
-        this.buttonElement.style.height = "5em";
-        this.buttonElement.style.display = "inline-block";
+        this.buttonElement.classList.add("game-button");
         this.buttonElement.style.backgroundColor = this.randomColor();
 
         this.buttonElement.textContent = id;
