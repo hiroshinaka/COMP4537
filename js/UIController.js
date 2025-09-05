@@ -33,16 +33,18 @@ class UIController{
         this.messageContainer.classList.add("message-container");
         container.appendChild(this.messageContainer);
 
+        this.messages = new MessageController(this.messageContainer);
+
         this._onGo = null;
 
         
         this.goButton.addEventListener("click", () => {
             const n = parseInt(this.input.value, 10);
             if (!Number.isInteger(n) || n < 3 || n > 7) {
-                this.showMessage("Please enter a whole number between 3 and 7.");
+                this.messages.show("error");
                 return;
             }
-            this.showMessage(`Starting game with ${n} buttons…`);
+            this.messages.show("starting", n);
             if (typeof this._onGo === "function") {
                 this._onGo(n);
             }
