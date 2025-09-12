@@ -6,20 +6,17 @@
   <title>Lab 1 — Writer</title>
   <link rel="stylesheet" href="./css/main.css" />
   <script src="./lang/messages/en/user.js" defer></script>
-  <script src="./js/storage.js" defer></script>
+  <script src="./js/clock.js" defer></script>
   <script src="./js/note.js" defer></script>
+  <script src="./js/noteView.js" defer></script>
+  <script src="./js/storage.js" defer></script>
+  <script src="./js/writerApp.js" defer></script>
   <script src="./js/writer.js" defer></script>
 </head>
 <body>
-  <main class="wrap">
-    <header class="topbar">
-      <a href="./index.html" class="back" id="btn-back"></a>
-      <div class="spacer"></div>
-      <button id="btn-add" type="button"></button>
-      <span class="badge" id="saved-badge"></span>
-    </header>
-
-    <section id="notes" class="notes"></section>
-  </main>
+  <div id="savedBadge"></div>
+  <div id="notesContainer"></div>
+  <button id="addBtn" type="button">Add</button>
+  <a href="./index.html">Back</a>
 </body>
 </html>
