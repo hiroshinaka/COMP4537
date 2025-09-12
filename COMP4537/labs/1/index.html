@@ -2,21 +2,25 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Document</title>
-  <link rel="stylesheet" href="./css/style.css" />
-  <script src="./scripts/index.js" defer></script>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Index</title>
+  <link rel="stylesheet" href="./css/main.css" />
 </head>
 <body>
-  <div class="container">
-    <div class="container-buttons">
-      <span class="navlabel">To Writer</span>
-      <button id="btn-writer" type="button" onclick="location.href = 'writer.html';">Writer</button>
+  <main class="wrap">
+    <h1>Lab 1</h1>
+
+    <div class="nav-row">
+      <div class="nav-card">
+        <span class="navlabel">To Writer</span>
+        <a class="btn" href="./writer.html">Writer</a>
+      </div>
+
+      <div class="nav-card">
+        <span class="navlabel">To Reader</span>
+        <a class="btn" href="./reader.html">Reader</a>
+      </div>
     </div>
-    <div class="container-buttons">
-      <span class="navlabel">To Reader</span>
-      <button id="btn-reader" type="button" onclick="location.href = 'reader.html';">Reader</button>
-    </div>
-  </div>
+  </main>
 </body>
 </html>
