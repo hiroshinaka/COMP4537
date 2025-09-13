@@ -1,29 +1,27 @@
-class Note {
-  constructor({ id, text = '', createdAt = new Date().toISOString(), updatedAt = createdAt }) {
+/**
+ * Creates a new Note object.
+ * @param {string} id - The id of the note.
+ * @param {string} text - The text of the note.
+ * @returns {Note} - The new Note object.
+ */
+export class Note {
+  constructor(id, text){
     this.id = id;
-    this.text = text;
-    this.createdAt = createdAt;
-    this.updatedAt = updatedAt;
+    this.text = text || '';
+  }
+  toPlain = function(){
+    return {
+      id: this.id,
+      text: this.text
+    }
   }
 
-  static createNew() {
-    const id = crypto.randomUUID ? crypto.randomUUID() : ('id_' + Date.now() + '_' + Math.random());
-    const now = new Date().toISOString();
-    return new Note({ id, text: '', createdAt: now, updatedAt: now });
-  }
-  static fromPlain(obj) {
-    return new Note({
-      id: obj.id,
-      text: obj.text ?? '',
-      createdAt: obj.createdAt ?? new Date().toISOString(),
-      updatedAt: obj.updatedAt ?? obj.createdAt ?? new Date().toISOString()
-    });
-  }
-  toPlain() {
-    return { id: this.id, text: this.text, createdAt: this.createdAt, updatedAt: this.updatedAt };
-  }
-  setText(newText) {
-    this.text = newText;
-    this.updatedAt = new Date().toISOString();
-  }
+  static from = function (obj) {
+    return new Note(
+      typeof obj?.id === "string" ? obj.id : crypto.randomUUID(),
+      typeof obj?.text === "string" ? obj.text : String(obj?.text ?? "")
+    );
+  };
 }
+
+

@@ -1,33 +1,34 @@
-class Storage{
-  static KEYS = {
-    NOTES: 'notes',
-    SAVED_AT: 'savedAt',
-    RETRIEVED_AT: 'retrievedAt'
+const KEY = 'notes';
+
+export class NotesRepository{
+  constructor(storage = window.localStorage){
+    this.storage = storage;
   }
-
-
-  getNotes(){
+  load(){
     try{
-      const raw = localStorage.getItem(Storage.KEYS.NOTES);
-      return raw ? this.parse(raw) : [];
-    }catch(e){
+      const raw = localStorage.getItem(KEY);
+      const arr = JSON.parse(raw);
+
+      if(!Array.isArray(arr)){
+        return [];
+      }
+      return arr.map(obj => ({
+        id: typeof obj.id === 'string' ? obj.id : crypto.randomUUID(),
+        text: typeof obj.text === 'string' ? obj.text : ''
+      }));
+    } catch(e){
+      console.error('Error loading notes from localStorage', e);
       return [];
     }
   }
-  saveNotes(arr){
-    localStorage.setItem(STORAGE.NOTES, JSON.stringify(arr));
-    const iso = new Date().toISOString();
-    localStorage.setItem(STORAGE.SAVED_AT, iso);
-    return iso;                   
+
+
+  save(notesArray) {
+    this.storage.setItem(KEY, JSON.stringify(notesArray));
   }
-  getSavedAt(){ 
-    return localStorage.getItem(Storage.KEYS.SAVED_AT); 
-  }
-  setRetrievedNow(){ 
-    localStorage.setItem(Storage.KEYS.RETRIEVED_AT, new Date().toISOString()); 
-  }
-  getRetrievedAt(){ 
-    return localStorage.getItem(Storage.KEYS.RETRIEVED_AT); 
+  
+  static key(){ 
+    return KEY; 
   }
 
 }

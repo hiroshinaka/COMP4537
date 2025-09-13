@@ -1,9 +1,6 @@
-class Clock {
-    static pad(n){
-        return String(n).padStart(2, '0');
-    }
-    static nowHMS(){
-        const d = new Date();
-        return `${Clock.pad(d.getHours())}:${Clock.pad(d.getMinutes())}:${Clock.pad(d.getSeconds())}`;
+export class Clock {
+ static formatTime(d){
+    const dt = (d instanceof Date) ? d : new Date(d);
+    return dt.toLocaleTimeString(undefined, {hour12: false})
     }
 }

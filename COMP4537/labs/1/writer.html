@@ -3,20 +3,32 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Lab 1 — Writer</title>
-  <link rel="stylesheet" href="./css/main.css" />
+  <title>Writer</title>
+  <link rel="icon" type="image/png" href="./img/notes.png"">
+  <link rel="stylesheet" href="./css/styles.css">
   <script src="./lang/messages/en/user.js" defer></script>
-  <script src="./js/clock.js" defer></script>
-  <script src="./js/note.js" defer></script>
-  <script src="./js/noteView.js" defer></script>
-  <script src="./js/storage.js" defer></script>
-  <script src="./js/writerApp.js" defer></script>
-  <script src="./js/writer.js" defer></script>
+  <script type="module" src="./js/writer.js"></script>
 </head>
 <body>
-  <div id="savedBadge"></div>
-  <div id="notesContainer"></div>
-  <button id="addBtn" type="button">Add</button>
-  <a href="./index.html">Back</a>
+  <header class="app-header">
+    <h1>Writer</h1>
+    <div class="status-pill" id="saveStatus"></div>
+    <div class="top-right" id="lastSaved"></div>
+  </header>
+
+  <main class="container">
+    <div id="notesContainer" class="notes"></div>
+
+    <div class="actions">
+      <button id="addNoteBtn" class="btn primary"></button>
+    </div>
+  </main>
+
+  <footer class="app-footer back-footer">
+    <br>
+    <a href="./index.html" class="btn back" id="backBtn"></a>
+  </footer>
+
+
 </body>
 </html>

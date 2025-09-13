@@ -1,23 +1,27 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Lab 1 — Reader</title>
-  <link rel="stylesheet" href="./css/main.css" />
-  <script src="./lang/messages/en/user.js" defer></script>
-  <script src="./js/storage.js" defer></script>
-  <script src="./js/reader.js" defer></script>
-</head>
-<body>
-  <main class="wrap">
-    <header class="topbar">
-      <a href="./index.html" class="back" id="btn-back"></a>
-      <div class="spacer"></div>
-      <span class="badge" id="retrieved-badge"></span>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Reader</title>
+    <link rel="icon" type="image/png" href="./img/notes.png"">
+    <link rel="stylesheet" href="./css/styles.css">
+    <script src="./lang/messages/en/user.js" defer></script>
+    <script type="module" src="./js/reader.js"></script>
+    <body>
+    <header class="app-header">
+        <h1>Reader</h1>
+        <div class="top-right" id="lastUpdated"></div>
     </header>
 
-    <section id="notes" class="notes read"></section>
-  </main>
+    <main class="container">
+        <div id="readNotes" class="read-notes"></div>
+    </main>
+
+    <footer class="app-footer back-footer">
+        <a href="./index.html" class="btn back" id="backBtn"></a>
+    </footer>
+
+
 </body>
 </html>

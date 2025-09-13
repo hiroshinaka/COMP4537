@@ -1,42 +1,44 @@
-class NoteView{
-    constructor(note, { onRemove, onInput }) {
+// js/noteView.js
+import { Note } from "./note.js";
+
+export class NoteView {
+  /**
+   * @param {Note} note
+   * @param {{onChange?: (note:Note)=>void, onRemove?: (note:Note)=>void}} handlers
+   */
+  constructor(note, { onChange, onRemove } = {}) {
     this.note = note;
+    this.onChange = onChange;
     this.onRemove = onRemove;
-    this.onInput = onInput;
+    this.el = null; // root element
+  }
 
-    // Elements
-    this.root = document.createElement('div');
-    this.root.className = 'note-item';
-    this.textarea = document.createElement('textarea');
-    this.textarea.className = 'note-textarea';
-    this.textarea.value = note.text;
+  /** Build DOM and wire events. Returns root element. */
+  render() {
+    const wrapper = document.createElement("div");
+    wrapper.className = "note-row";
 
-    this.removeBtn = document.createElement('button');
-    this.removeBtn.className = 'note-remove';
-    this.removeBtn.type = 'button';
-    this.removeBtn.textContent = 'Remove';
+    const ta = document.createElement("textarea");
+    ta.value = this.note.text;
 
-    // Wire events
-    this.textarea.addEventListener('input', () => {
-      this.onInput(this.note.id, this.textarea.value);
+    const remove = document.createElement("button");
+    remove.type = "button";
+    remove.className = "btn danger remove";
+    remove.textContent = window.MSG.BTN_REMOVE;
+
+    ta.addEventListener("input", () => {
+      this.note.text = ta.value;
+      if (this.onChange) this.onChange(this.note);
     });
-    this.removeBtn.addEventListener('click', () => {
-      this.onRemove(this.note.id);
+
+    remove.addEventListener("click", () => {
+      if (this.onRemove) this.onRemove(this.note);
+      wrapper.remove();
     });
 
-    // Compose
-    this.root.appendChild(this.textarea);
-    this.root.appendChild(this.removeBtn);
+    wrapper.appendChild(ta);
+    wrapper.appendChild(remove);
+    this.el = wrapper;
+    return wrapper;
   }
-
-  mount(parent){
-    parent.appendChild(this.root);
-  }
-
-  unmount(){
-    if(this.root.parentNode){
-      this.root.parentNode.removeChild(this.root);
-    }
-  }
-
 }
