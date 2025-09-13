@@ -1,6 +1,5 @@
-// js/noteView.js
 import { Note } from "./note.js";
-
+/* Disclosure: Portions of this educational lab were assisted by ChatGPT.*/
 export class NoteView {
   /**
    * @param {Note} note

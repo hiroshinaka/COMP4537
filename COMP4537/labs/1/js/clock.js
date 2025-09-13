@@ -1,3 +1,4 @@
+/* Disclosure: Portions of this educational lab were assisted by ChatGPT.*/
 export class Clock {
   /**
    * Clock object

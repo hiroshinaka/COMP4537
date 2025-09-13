@@ -1,5 +1,5 @@
 const KEY = 'notes';
-
+/* Disclosure: Portions of this educational lab were assisted by ChatGPT.*/
 export class NotesRepository{
   constructor(storage = window.localStorage){
     this.storage = storage;

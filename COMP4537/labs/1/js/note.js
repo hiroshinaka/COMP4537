@@ -1,4 +1,5 @@
 /**
+ * Disclosure: Portions of this educational lab were assisted by ChatGPT.
  * Creates a new Note object.
  * @param {string} id - The id of the note.
  * @param {string} text - The text of the note.

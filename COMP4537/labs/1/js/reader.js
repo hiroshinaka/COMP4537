@@ -1,7 +1,7 @@
 import {Clock} from './clock.js';
 import {Note} from './note.js';
 import {NotesRepository} from './storage.js';
-
+/* Disclosure: Portions of this educational lab were assisted by ChatGPT.*/
 class ReaderApp {
   constructor() {
     this.repo = new NotesRepository();

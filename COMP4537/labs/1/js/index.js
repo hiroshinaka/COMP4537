@@ -1,4 +1,3 @@
-// Just sets button labels from messages file (keeps strings centralized)
 document.addEventListener("DOMContentLoaded", () => {
   const writer = document.querySelector('a[href="./writer.html"]');
   const reader = document.querySelector('a[href="./reader.html"]');

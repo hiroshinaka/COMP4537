@@ -1,6 +1,4 @@
-// All user-facing strings collected here (no hard-coded strings scattered)
-/* Disclosure: Portions of this educational lab were assisted by ChatGPT.
-   Student understands all code and can explain it line-by-line. */
+/* Disclosure: Portions of this educational lab were assisted by ChatGPT.*/
 (function(){
   const MSG = {
     BTN_WRITER: "Writer",
