@@ -10,7 +10,6 @@ class WriterApp {
     this.addBtn = document.getElementById("addNoteBtn");
     this.backBtn = document.getElementById("backBtn");
     this.savedAt = document.getElementById("lastSaved");
-    this.saveStatus = document.getElementById("saveStatus");
 
     // Labels
     this.addBtn.textContent = window.MSG.BTN_ADD_NOTE;
@@ -23,19 +22,16 @@ class WriterApp {
 
     // Events
     this.addBtn.addEventListener("click", () => this.addNote(""));
-    window.addEventListener("beforeunload", () => this.maybeSave());
-
 
     this.init();
     this.startAutoSave();
   }
 
 
-  setStatusSaving() { 
-    this.saveStatus.textContent = window.MSG.STATUS_SAVING; 
-  }
-
-
+/**
+ * Initializes the application by loading plain note data from storage, 
+ * normalizing storage, rendering all notes, and resetting the "last saved at" timestamp.
+ */
   init() {
     // load plain data 
     this.notes = this.repo.load().map(Note.from);
@@ -45,6 +41,11 @@ class WriterApp {
     this.savedAt.textContent = "";
   }
 
+/**
+ * Starts an interval to automatically save the notes to storage every 2 seconds.
+ * If the notes are not dirty (i.e. they have not been modified since the last save), does nothing.
+ * Otherwise, sets the save status to "Saving...", saves the notes to storage, and resets the "last saved at" timestamp.
+ */
   startAutoSave() {
     setInterval(() => {
       if (!this.dirty) return;
@@ -55,13 +56,12 @@ class WriterApp {
     }, 2000);
   }
 
-  maybeSave() {
-    if (this.dirty) {
-      this.repo.save(this.notes.map(n => n.toPlain()));
-    }
-  }
 
-
+/**
+ * Adds a new note to the notes list and renders it.
+ * @param {string} text - The text of the note to add.
+ * If no text is provided, an empty note is added.
+ */
   addNote(text = "") {
     const note = new Note(crypto.randomUUID(), text);
     this.notes.push(note);
@@ -69,6 +69,11 @@ class WriterApp {
     this.dirty = true;
   }
 
+/**
+ * Removes a note from the notes list and triggers a re-render of all notes.
+ * Saves the updated notes list to storage immediately.
+ * @param {Note} note - The note to remove.
+ */
   removeNote(note) {
     this.notes = this.notes.filter(x => x.id !== note.id);
     // immediate save required by spec
@@ -79,15 +84,12 @@ class WriterApp {
   }
 
 
+/**
+ * Renders all notes in the notes list in the notes container.
+ * When a note is updated or removed, triggers a re-render of all notes.
+ */
   renderAll() {
     this.notesContainer.innerHTML = "";
-    if (this.notes.length === 0) {
-      const empty = document.createElement("p");
-      empty.className = "muted";
-      empty.textContent = window.MSG.EMPTY_STATE;
-      this.notesContainer.appendChild(empty);
-      return;
-    }
     this.notes.forEach(n => {
       const view = new NoteView(n, {
         onChange: () => { this.dirty = true; },
