@@ -49,7 +49,6 @@ class WriterApp {
   startAutoSave() {
     setInterval(() => {
       if (!this.dirty) return;
-      this.setStatusSaving();
       this.repo.save(this.notes.map(n => n.toPlain()));
       this.savedAt.textContent = `${window.MSG.LABEL_SAVED_AT}: ${Clock.formatTime(new Date())}`;
       this.dirty = false;
@@ -77,7 +76,6 @@ class WriterApp {
   removeNote(note) {
     this.notes = this.notes.filter(x => x.id !== note.id);
     // immediate save required by spec
-    this.setStatusSaving();
     this.repo.save(this.notes.map(n => n.toPlain()));
     this.savedAt.textContent = `${window.MSG.LABEL_SAVED_AT}: ${Clock.formatTime(new Date())}`;
     this.renderAll();
