@@ -1,6 +1,6 @@
 const http = require('http');
 const url = require('url');
-
+const date = require('./module/utils.js');
 const server = http.createServer((req, res) => {
     res.writeHead(200, { 'Content-Type': 'text/html' });    
     const parsedUrl = url.parse(req.url, true);
@@ -8,13 +8,14 @@ const server = http.createServer((req, res) => {
 
     
     // Get current server time
-    const currentTime = new Date().toLocaleString();
   
     const response = `
         <div style="color: blue;">
-            <h2>Hello, ${name}!</h2>
-            <p>Welcome to my API server.</p>
-            <p>Current server time: ${currentTime}</p>
+            <p><span style="font-weight: bold;">Hello, ${name},</span>
+            <br>
+            <span>What a beautiful day. Server current date and time is </span>
+            <br>
+            <span style="font-weight: bold;">Current server time:</span> ${date.time()}</p>
         </div>
     `;
     
