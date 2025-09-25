@@ -1,5 +1,5 @@
 /* Disclosure: Portions of this educational lab were assisted by ChatGPT.*/
-(function(){
+
   const MSG = {
     BTN_WRITER: "Writer",
     BTN_READER: "Reader",
@@ -12,4 +12,3 @@
   };
   // Expose
   window.MSG = MSG;
-})();
