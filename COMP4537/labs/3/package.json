@@ -1,6 +1,16 @@
 {
-  "name": "comp4537-lab3",
+  "name": "file-read-write-api",
   "version": "1.0.0",
-  "type": "module",
-  "dependencies": { "@vercel/kv": "^1.0.0" }
+  "description": "API for reading and writing files",
+  "main": "server.js",
+  "scripts": {
+    "start": "node server.js",
+    "dev": "node server.js"
+  },
+  "engines": {
+    "node": ">=14.0.0"
+  },
+  "keywords": ["file", "api", "read", "write"],
+  "author": "",
+  "license": "MIT"
 }

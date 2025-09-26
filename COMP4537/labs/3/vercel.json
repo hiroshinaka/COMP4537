@@ -1,12 +1,15 @@
 {
-  "rewrites": [
+  "version": 2,
+  "builds": [
     {
-      "source": "/COMP4537/labs/3/writeFile",
-      "destination": "/api/write"
-    },
+      "src": "server.js",
+      "use": "@vercel/node"
+    }
+  ],
+  "routes": [
     {
-      "source": "/COMP4537/labs/3/readFile/file.txt",
-      "destination": "/api/read"
+      "src": "/(.*)",
+      "dest": "server.js"
     }
   ]
 }
