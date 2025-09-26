@@ -2,9 +2,8 @@ const http = require('http');
 const url = require('url');
 const fs = require('fs');
 const path = require('path');
-const writer = require('./writeFile/utils.js');
 
-const PORT = process.env.PORT || 3000;
+const PORT = process.env.PORT || 3001;
 
 const server = http.createServer((req, res) => {
     // Enable CORS
@@ -22,28 +21,8 @@ const server = http.createServer((req, res) => {
     const parsedUrl = url.parse(req.url, true);
     const pathname = parsedUrl.pathname;
     
-    // Handle writeFile endpoints
-    if (pathname === '/writeFile' || pathname === '/COMP4537/labs/3/writeFile') {
-        const text = parsedUrl.query.text;
-        
-        if (!text) {
-            res.writeHead(400, { 'Content-Type': 'text/plain' });
-            res.end('Error: Missing text parameter');
-            return;
-        }
-
-        try {
-            const filepath = writer.writeTexttoFile(text);
-            res.writeHead(200, { 'Content-Type': 'text/plain' });
-            res.end(`Successfully appended "${text}" to file.txt`);
-        } catch (error) {
-            console.error('Error writing to file:', error);
-            res.writeHead(500, { 'Content-Type': 'text/plain' });
-            res.end('Error: Failed to write to file');
-        }
-    }
-    // Handle readFile endpoints
-    else if (pathname.startsWith('/readFile/') || pathname.startsWith('/COMP4537/labs/3/readFile/')) {
+    // Handle both /readFile/filename and /COMP4537/labs/3/readFile/filename paths
+    if (pathname.startsWith('/readFile/') || pathname.startsWith('/COMP4537/labs/3/readFile/')) {
         let filename;
         
         if (pathname.startsWith('/readFile/')) {
@@ -59,7 +38,7 @@ const server = http.createServer((req, res) => {
         }
 
         try {
-            const filepath = path.join(__dirname, 'readFile', filename);
+            const filepath = path.join(__dirname, filename);
             
             // Check if file exists
             if (!fs.existsSync(filepath)) {
@@ -78,16 +57,11 @@ const server = http.createServer((req, res) => {
             res.writeHead(500, { 'Content-Type': 'text/plain' });
             res.end('Error: Failed to read file');
         }
-    }
-    // Default route
-    else {
+    } else {
         res.writeHead(404, { 'Content-Type': 'text/plain' });
         res.end('404 - Not Found');
     }
 }).listen(PORT, () => {
-    console.log(`Server running on port ${PORT}`);
-    console.log(`Write endpoint: http://localhost:${PORT}/writeFile?text=yourtext`);
-    console.log(`Read endpoint: http://localhost:${PORT}/readFile/file.txt`);
+    console.log(`Read server running on port ${PORT}`);
+    console.log(`Endpoint: http://localhost:${PORT}/readFile/filename`);
 });
-
-module.exports = server;
