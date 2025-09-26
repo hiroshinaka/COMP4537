@@ -1,0 +1,12 @@
+{
+  "rewrites": [
+    {
+      "source": "/COMP4537/labs/3/writeFile",
+      "destination": "/api/write"
+    },
+    {
+      "source": "/COMP4537/labs/3/readFile/file.txt",
+      "destination": "/api/read"
+    }
+  ]
+}
