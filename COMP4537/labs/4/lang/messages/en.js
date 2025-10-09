@@ -8,4 +8,5 @@ const msgs ={
     "word_exists": "Word already exists in the dictionary.",
     "word_not_found": "Word not found in the dictionary.",
     "both_required": "Both 'word' and 'definition' are required.",
+    "definition_here": "Definition will appear here."
 }

@@ -62,7 +62,7 @@ class SearchApp {
                 this.definition.appendChild(def);
 
             } else if (res.status === 404) {
-                this.definition.textContent = msgs.word_not_found;
+                this.definition.textContent = msgs.word_not_found.replace('Word', q);
             } else {
                 this.definition.textContent = 'Error: ' + res.status;
             }

@@ -15,7 +15,7 @@ class StoreApp {
         wordInput.type = 'text';
         wordInput.id = 'word';
         wordInput.name = 'word';
-        wordInput.pattern = "[A-Za-z]";
+        wordInput.pattern = "[A-Za-z ]+";
         wordInput.placeholder = (typeof msgs !== 'undefined' && msgs.enter_word) ? msgs.enter_word : 'Word';
         form.appendChild(wordInput);
 
@@ -64,7 +64,7 @@ class StoreApp {
 
             if (res.ok) {
                 const payload = await res.json();
-                alert('Added: ' + payload.data.word);
+                alert(`${payload.message}\nSuccesfully Added: ${payload.data.word} \nTotal words in dictionary: ${payload.totalEntries}`);
             } else {
                 const err = await res.json().catch(() => ({}));
                 alert('Error: ' + (err.error || res.status));
