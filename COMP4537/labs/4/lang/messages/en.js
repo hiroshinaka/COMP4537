@@ -1,5 +1,5 @@
 const msgs ={
-    "enter_word": "Enter a word:",
+    "enter_word": "Please Enter a word",
     "enter_definition": "Enter a definition:",
     "add_button": "Add",
     "search_word": "Search for a word:",
