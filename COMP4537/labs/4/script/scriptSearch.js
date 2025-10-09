@@ -26,6 +26,7 @@ class SearchApp {
     createDefinitionBox(){
         this.definition = document.createElement("div");
         this.definition.setAttribute("id", "definition");
+        this.definition.textContent = msgs.definition_here;
         this.container.appendChild(this.definition);
     }
 
