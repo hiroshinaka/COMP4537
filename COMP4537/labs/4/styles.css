@@ -10,7 +10,7 @@ body {
     font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
     line-height: 1.6;
     color: #333;
-    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    background: #667eea;
     min-height: 100vh;
     padding: 20px;
 }
@@ -53,9 +53,7 @@ input[type="text"]:focus {
     box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
 }
 
-input[type="text"]:hover {
-    border-color: #c1c9d2;
-}
+
 
 /* Button styles */
 button {
@@ -72,15 +70,11 @@ button {
 /* Primary button (search/add) */
 button[type="submit"],
 #searchButton {
-    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    background: #667eea;
     color: white;
 }
 
-button[type="submit"]:hover,
-#searchButton:hover {
-    transform: translateY(-2px);
-    box-shadow: 0 8px 25px rgba(102, 126, 234, 0.3);
-}
+
 
 /* Navigation button */
 #navButton {
@@ -89,19 +83,12 @@ button[type="submit"]:hover,
     margin-top: 20px;
 }
 
-#navButton:hover {
-    background-color: #5a6268;
-    transform: translateY(-2px);
-    box-shadow: 0 8px 25px rgba(108, 117, 125, 0.3);
-}
-
 /* Definition display area */
 #definition {
     min-height: 100px;
     padding: 20px;
     background-color: #f8f9fa;
     border-radius: 8px;
-    border-left: 4px solid #667eea;
     margin-top: 10px;
 }
 
