@@ -1,1 +1,1 @@
-window.API_BASE = 'http://localhost:8080/lab5/api/v1'; 
+window.API_BASE = 'https://dleecode.com/comp4537/labs/5/api'; 

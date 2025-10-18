@@ -104,46 +104,46 @@ class App {
         this.displayArea.textContent = "Error inserting sample data: " + err.message;
     }
 }
-    async runQuery(query){
+    async runQuery(query) {
     const q = (query || '').trim();
     const lower = q.toLowerCase();
     this.displayArea.textContent = this.msgs.running_msg;
+
     if (/(update|delete|drop|alter|truncate)\b/.test(lower)) {
         alert('UPDATE/DELETE/DROP/ALTER/TRUNCATE are blocked.');
-    return;
+        return;
     }
     if (!/^(select|insert)\b/.test(lower)) {
         alert('Only SELECT and INSERT are allowed in this lab.');
-    return;
+        return;
     }
-        try{
-            this.displayArea.textContent = this.msgs.running_msg;
-            if (lower.startsWith('insert')){
-                const res = await fetch(`${this.API_BASE}/sql`, {
-                    method: 'POST',
-                    mode: 'cors',
-                    headers: {
-                        'Content-Type': 'application/json'
-                    },
-                    body: JSON.stringify({ query: q })
-                });
-                const data = await res.json();
-                this.renderResult(data);
-            } else {
-                const url = `${this.API_BASE}/sql/${encodeURIComponent(q)}`;
-                const rest = await fetch(url, {
-                    method: 'GET',
-                    mode: 'cors',
-                    headers: { 'accept': 'application/json' },
 
-            });
-            const data = await rest.json();
-            this.renderResult(res.ok ? data : { error: data?.error || 'Select failed', detail: data });
-            }
-        }catch(err){
-            this.displayArea.textContent = "Error running query: " + err.message;   
-
+    try {
+        this.displayArea.textContent = this.msgs.running_msg;
+        if (lower.startsWith('insert')) {
+        const res = await fetch(`${this.API_BASE}/sql`, {
+            method: 'POST',
+            mode: 'cors',
+            headers: {
+            'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({ query: q })
+        });
+        const data = await res.json();
+        this.renderResult(data);
+        } else {
+        const url = `${this.API_BASE}/sql?q=${encodeURIComponent(q)}`;
+        const res = await fetch(url, {
+            method: 'GET',
+            mode: 'cors',
+            headers: { 'accept': 'application/json' },
+        });
+        const data = await res.json();
+        this.renderResult(res.ok ? data : { error: data?.error || 'Select failed', detail: data });
         }
+    } catch (err) {
+        this.displayArea.textContent = "Error running query: " + err.message;
+    }
     }
 
  
