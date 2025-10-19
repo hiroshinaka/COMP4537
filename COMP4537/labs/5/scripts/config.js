@@ -1,1 +1,1 @@
-window.API_BASE = 'https://dleecode.com/comp4537/labs/5/api'; 
+window.API_BASE = 'https://dleecode.com/comp4537/labs/5/'; 
