@@ -182,13 +182,13 @@ class App {
                 this.renderResult(data);
             } else {
                 const url = `${this.API_BASE}/sql/${encodeURIComponent(q)}`;
-                const rest = await fetch(url, {
+                const res = await fetch(url, {
                     method: 'GET',
                     mode: 'cors',
                     headers: { 'accept': 'application/json' },
 
             });
-            const data = await rest.json();
+            const data = await res.json();
             this.renderResult(res.ok ? data : { error: data?.error || 'Select failed', detail: data });
             }
         }catch(err){
