@@ -181,15 +181,15 @@ class App {
                 const data = await res.json();
                 this.renderResult(data);
             } else {
-                const url = `${this.API_BASE}/sql/${encodeURIComponent(q)}`;
+                // Use GET with a query parameter for SELECT (many backends expose GET /sql?query=...)
+                const url = `${this.API_BASE}/sql?query=${encodeURIComponent(q)}`;
                 const res = await fetch(url, {
                     method: 'GET',
                     mode: 'cors',
-                    headers: { 'accept': 'application/json' },
-
-            });
-            const data = await res.json();
-            this.renderResult(res.ok ? data : { error: data?.error || 'Select failed', detail: data });
+                    headers: { 'Accept': 'application/json' }
+                });
+                const data = await res.json();
+                this.renderResult(res.ok ? data : { error: data?.error || 'Select failed', detail: data });
             }
         }catch(err){
             this.displayArea.textContent = "Error running query: " + err.message;   
