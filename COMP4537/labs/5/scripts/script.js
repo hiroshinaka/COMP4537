@@ -46,37 +46,69 @@ class App {
     }
 
     renderResult(result){
-        this.displayArea.innerHTML ='';
-        const rows = Array.isArray(result?.rows) ? result.rows : (Array.isArray(result) ? result : null);
+        this.displayArea.innerHTML = '';
 
-    if (rows && rows.length && typeof rows[0] === 'object' && rows[0] !== null) {
-        const table = document.createElement('table');
-        const thead = document.createElement('thead');
-        const headerRow = document.createElement('tr');
-        const cols = Object.keys(rows[0]);
-        cols.forEach(col => {
-            const th = document.createElement('th');
-            th.textContent = col;
-            headerRow.appendChild(th);
-        });
-        thead.appendChild(headerRow);
-        table.appendChild(thead);
+        // Helper: attempt to extract an array of rows from common response shapes
+        const extractRows = (res) => {
+            if (!res) return null;
+            if (Array.isArray(res)) return res;
+            if (Array.isArray(res.rows)) return res.rows;
+            if (res.data) {
+                if (Array.isArray(res.data)) return res.data;
+                if (Array.isArray(res.data.rows)) return res.data.rows;
+            }
+            // Fallback: find the first property that is an array
+            for (const k in res) {
+                if (Array.isArray(res[k])) return res[k];
+            }
+            return null;
+        };
 
-        const tbody = document.createElement('tbody');
-        rows.forEach(r => {
-            const tr = document.createElement('tr');
-            cols.forEach(c => {
-            const td = document.createElement('td');
-            td.textContent = (r[c] ?? '').toString();
-            tr.appendChild(td);
-            });
-            tbody.appendChild(tr);
-        });
-        table.appendChild(tbody);
+        const rows = extractRows(result);
 
-        this.displayArea.appendChild(table);
+        if (rows && rows.length) {
+            // If rows are objects, render a table using the union of keys
+            if (typeof rows[0] === 'object' && rows[0] !== null) {
+                const colsSet = new Set();
+                rows.forEach(r => Object.keys(r || {}).forEach(k => colsSet.add(k)));
+                const cols = Array.from(colsSet);
+
+                const table = document.createElement('table');
+                const thead = document.createElement('thead');
+                const headerRow = document.createElement('tr');
+                cols.forEach(col => {
+                    const th = document.createElement('th');
+                    th.textContent = col;
+                    headerRow.appendChild(th);
+                });
+                thead.appendChild(headerRow);
+                table.appendChild(thead);
+
+                const tbody = document.createElement('tbody');
+                rows.forEach(r => {
+                    const tr = document.createElement('tr');
+                    cols.forEach(c => {
+                        const td = document.createElement('td');
+                        const val = r && (r[c] ?? '');
+                        td.textContent = val instanceof Date ? val.toISOString() : String(val);
+                        tr.appendChild(td);
+                    });
+                    tbody.appendChild(tr);
+                });
+                table.appendChild(tbody);
+
+                this.displayArea.appendChild(table);
+            } else {
+                // array of primitives (numbers/strings) — show as pretty JSON
+                const pre = document.createElement('pre');
+                pre.textContent = JSON.stringify(rows, null, 2);
+                this.displayArea.appendChild(pre);
+            }
         } else {
-        this.displayArea.textContent = JSON.stringify(result, null, 2);
+            // no rows found — pretty-print full result (errors or empty)
+            const pre = document.createElement('pre');
+            pre.textContent = JSON.stringify(result, null, 2);
+            this.displayArea.appendChild(pre);
         }
     }
        
@@ -121,41 +153,23 @@ class App {
     }catch(err){
         this.displayArea.textContent = "Error inserting sample data: " + err.message;
     }
-    }
+}
     async runQuery(query){
     const q = (query || '').trim();
     const lower = q.toLowerCase();
     this.displayArea.textContent = this.msgs.running_msg;
+
     if (/(update|delete|drop|alter|truncate)\b/.test(lower)) {
         alert('UPDATE/DELETE/DROP/ALTER/TRUNCATE are blocked.');
-    return;
+        return;
     }
     if (!/^(select|insert)\b/.test(lower)) {
         alert('Only SELECT and INSERT are allowed in this lab.');
-    return;
+        return;
     }
         try{
-
             this.displayArea.textContent = this.msgs.running_msg;
             if (lower.startsWith('insert')){
-                // Ensure patient table exists before running INSERTs
-                const createPatientTableSQL = `
-                CREATE TABLE IF NOT EXISTS patient (
-                    patient_id INT AUTO_INCREMENT PRIMARY KEY,
-                    name VARCHAR(50),
-                    birth_date DATE
-                );
-                `;
-                await fetch(`${this.API_BASE}/sql`, {
-                    method: 'POST',
-                    mode: 'cors',
-                    headers: {
-                        'Content-Type': 'application/json',
-                        'Accept': 'application/json'
-                    },
-                    body: JSON.stringify({ query: createPatientTableSQL })
-                });
-
                 const res = await fetch(`${this.API_BASE}/sql`, {
                     method: 'POST',
                     mode: 'cors',
@@ -175,7 +189,7 @@ class App {
 
             });
             const data = await rest.json();
-            this.renderResult(rest.ok ? data : { error: data?.error || 'Select failed', detail: data });
+            this.renderResult(res.ok ? data : { error: data?.error || 'Select failed', detail: data });
             }
         }catch(err){
             this.displayArea.textContent = "Error running query: " + err.message;   
