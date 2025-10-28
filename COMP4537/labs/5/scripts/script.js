@@ -81,14 +81,32 @@ class App {
     }
        
     async insertSampleRows() {
-    const insertSQL = `
-      INSERT INTO patient (first_name, last_name, gender, birth_date, phone, email)
-      VALUES
-        ('Alice','Nguyen','F','1995-07-21','604-555-0101','alice@example.com'),
-        ('Bob','Singh','M','1990-01-05','604-555-0102','bob@example.com'),
-        ('Carol','Tan','F','1988-11-14','604-555-0103','carol@example.com');
-    `;
+        const insertSQL = `
+            INSERT INTO patient (name, birth_date)
+            VALUES
+                ('Sarah Brown', '1901-01-01'),
+                ('John Smith', '1941-01-01'),
+                ('Jack Ma', '1961-01-01'),
+                ('Elon Musk', '1999-01-01');
+        `;
     try{
+            const createPatientTableSQL = `
+            CREATE TABLE IF NOT EXISTS patient (
+                patient_id INT AUTO_INCREMENT PRIMARY KEY,
+                name VARCHAR(50),
+                birth_date DATE
+            );
+            `;
+            await fetch(`${this.API_BASE}/sql`, {
+                method: 'POST',
+                mode: 'cors',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Accept': 'application/json'
+                },
+                body: JSON.stringify({ query: createPatientTableSQL })
+            });
+
         const res = await fetch(`${this.API_BASE}/sql`, {
             method: 'POST',
             mode: 'cors',
@@ -103,7 +121,7 @@ class App {
     }catch(err){
         this.displayArea.textContent = "Error inserting sample data: " + err.message;
     }
-}
+    }
     async runQuery(query){
     const q = (query || '').trim();
     const lower = q.toLowerCase();
@@ -117,8 +135,27 @@ class App {
     return;
     }
         try{
+
             this.displayArea.textContent = this.msgs.running_msg;
             if (lower.startsWith('insert')){
+                // Ensure patient table exists before running INSERTs
+                const createPatientTableSQL = `
+                CREATE TABLE IF NOT EXISTS patient (
+                    patient_id INT AUTO_INCREMENT PRIMARY KEY,
+                    name VARCHAR(50),
+                    birth_date DATE
+                );
+                `;
+                await fetch(`${this.API_BASE}/sql`, {
+                    method: 'POST',
+                    mode: 'cors',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'Accept': 'application/json'
+                    },
+                    body: JSON.stringify({ query: createPatientTableSQL })
+                });
+
                 const res = await fetch(`${this.API_BASE}/sql`, {
                     method: 'POST',
                     mode: 'cors',
@@ -138,7 +175,7 @@ class App {
 
             });
             const data = await rest.json();
-            this.renderResult(res.ok ? data : { error: data?.error || 'Select failed', detail: data });
+            this.renderResult(rest.ok ? data : { error: data?.error || 'Select failed', detail: data });
             }
         }catch(err){
             this.displayArea.textContent = "Error running query: " + err.message;   
