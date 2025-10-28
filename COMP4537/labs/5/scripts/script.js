@@ -182,7 +182,7 @@ class App {
                 this.renderResult(data);
             } else {
                 // Use GET with a query parameter for SELECT (many backends expose GET /sql?query=...)
-                const url = `${this.API_BASE}/sql?query=${encodeURIComponent(q)}`;
+                const url = `${this.API_BASE}/sql?q=${encodeURIComponent(q)}`;
                 const res = await fetch(url, {
                     method: 'GET',
                     mode: 'cors',
